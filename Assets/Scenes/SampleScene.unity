@@ -369,8 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4575cac4bc8c49c4daf96577fe4f5992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SampleScene_Right: SampleSceneRight
-  SampleScene_Left: SampleSceneRight
+  SampleScene_Right: Scene2
+  SampleScene_Left: Scene1
 --- !u!4 &239386829
 Transform:
   m_ObjectHideFlags: 0
@@ -1074,7 +1074,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Left Way
+  m_Text: Right Way
 --- !u!222 &793242737
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1255,7 +1255,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Right Way
+  m_Text: 'Left Way
 
 '
 --- !u!222 &1027590548
