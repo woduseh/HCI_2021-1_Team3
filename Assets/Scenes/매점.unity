@@ -766,7 +766,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -1286,6 +1286,8 @@ MonoBehaviour:
   m_sliderTimeScrub: {fileID: 872933577}
   RightScene: "\uD31C\uBC1C"
   LeftScene: "\uD559\uAD50\uC785\uAD6C "
+  RightArrow: {fileID: 0}
+  LeftArrow: {fileID: 0}
   GestureStatus: {fileID: 1639394105}
 --- !u!4 &1365663728
 Transform:

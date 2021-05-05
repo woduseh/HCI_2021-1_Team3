@@ -23,6 +23,8 @@ public class VideoController : MonoBehaviour
 
         LeftArrow.SetActive(false);
         RightArrow.SetActive(false);
+
+        videoPlayer.playbackSpeed = 1f;
     }
 
     private void Update() {
@@ -49,6 +51,12 @@ public class VideoController : MonoBehaviour
             // 현재 재스쳐를 인식하여 비디오 진행, 정지 결정
             if (GestureStatus.text.Contains("Run"))
             {
+                videoPlayer.playbackSpeed = 1.5f;
+                videoPlayer.Play();
+            }
+            else if (GestureStatus.text.Contains("walk"))
+            {
+                videoPlayer.playbackSpeed = 1f;
                 videoPlayer.Play();
             }
             else

@@ -127,6 +127,9 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 		KickLeft,
 		KickRight,
 		Run,
+		Walk,
+		Walk2,
+		VPose,
 
         RaisedRightHorizontalLeftHand,   // by Andrzej W
         RaisedLeftHorizontalRightHand, 
@@ -1656,8 +1659,11 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 				{
 				case 0:  // gesture detection - phase 1
 					// check if the left knee is up
-					if(jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] &&
-					   (jointsPos[leftKneeIndex].y - jointsPos[rightKneeIndex].y) > 0.1f)
+					if(jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && jointsTracked[leftHandIndex] && jointsTracked[rightHandIndex] && jointsTracked[hipCenterIndex] &&
+					   (jointsPos[leftKneeIndex].y - jointsPos[rightKneeIndex].y) > 0.1f &&
+					   (jointsPos[leftHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f &&
+					   (jointsPos[rightHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f)
+
 					{
 						SetGestureJoint(ref gestureData, timestamp, leftKneeIndex, jointsPos[leftKneeIndex]);
 						gestureData.progress = 0.3f;
@@ -1668,10 +1674,12 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 					if((timestamp - gestureData.timestamp) < 1.0f)
 					{
 						// check if the right knee is up
-						bool isInPose = jointsTracked[rightKneeIndex] && jointsTracked[leftKneeIndex] &&
-							(jointsPos[rightKneeIndex].y - jointsPos[leftKneeIndex].y) > 0.1f;
+						bool isInPose = jointsTracked[rightKneeIndex] && jointsTracked[leftKneeIndex] && jointsTracked[leftHandIndex] && jointsTracked[rightHandIndex] && jointsTracked[hipCenterIndex] &&
+							(jointsPos[rightKneeIndex].y - jointsPos[leftKneeIndex].y) > 0.1f &&
+							(jointsPos[leftHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f &&
+							(jointsPos[rightHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f;
 						
-						if(isInPose)
+						if (isInPose)
 						{
 							// go to state 2
 							gestureData.timestamp = timestamp;
@@ -1690,10 +1698,12 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 					if((timestamp - gestureData.timestamp) < 1.0f)
 					{
 						// check if the left knee is up again
-						bool isInPose = jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] &&
-							(jointsPos[leftKneeIndex].y - jointsPos[rightKneeIndex].y) > 0.1f;
-						
-						if(isInPose)
+						bool isInPose = jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && jointsTracked[leftHandIndex] && jointsTracked[rightHandIndex] && jointsTracked[hipCenterIndex] &&
+							(jointsPos[leftKneeIndex].y - jointsPos[rightKneeIndex].y) > 0.1f &&
+							(jointsPos[leftHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f &&
+							(jointsPos[rightHandIndex].y - jointsPos[hipCenterIndex].y) > 0.1f;
+
+							if (isInPose)
 						{
 							// go back to state 1
 							gestureData.timestamp = timestamp;
@@ -1710,8 +1720,86 @@ public class KinectGestures : MonoBehaviour, GestureManagerInterface
 				}
 				break;
 
-            // check for MoveLeft
-            case Gestures.MoveLeft:
+			case Gestures.Walk:
+				switch (gestureData.state)
+				{
+					case 0:  // gesture detection
+						if (jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && 
+						   (jointsPos[leftKneeIndex].z - jointsPos[rightKneeIndex].z) > 0.1f)
+						   
+						{
+							SetGestureJoint(ref gestureData, timestamp, leftKneeIndex, jointsPos[leftKneeIndex]);
+						}
+						break;
+
+					case 1:  // gesture complete
+						bool isInPose = jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && 
+							(jointsPos[leftKneeIndex].z - jointsPos[rightKneeIndex].z) > 0.1f;
+
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, KinectInterop.Constants.PoseCompleteDuration);
+						break;
+				}
+				break;
+
+
+			case Gestures.Walk2:
+				switch (gestureData.state)
+				{
+					case 0:  // gesture detection
+						if (jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && 
+						   (jointsPos[rightKneeIndex].z - jointsPos[leftKneeIndex].z) > 0.1f)
+						   
+						{
+							SetGestureJoint(ref gestureData, timestamp, leftKneeIndex, jointsPos[leftKneeIndex]);
+						}
+						break;
+
+					case 1:  // gesture complete
+						bool isInPose = jointsTracked[leftKneeIndex] && jointsTracked[rightKneeIndex] && 
+							(jointsPos[rightKneeIndex].z - jointsPos[leftKneeIndex].z) > 0.1f;
+
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, KinectInterop.Constants.PoseCompleteDuration);
+						break;
+				}
+				break;
+
+			case Gestures.VPose:
+				switch (gestureData.state)
+				{
+					case 0:
+						if (jointsTracked[rightHandIndex] && jointsTracked[leftHandIndex] && jointsTracked[leftShoulderIndex] && jointsTracked[rightShoulderIndex] &&
+							(jointsPos[rightHandIndex].y - jointsPos[rightShoulderIndex].y) > 0.2f &&
+							(jointsPos[rightHandIndex].y - jointsPos[rightShoulderIndex].y) < 0.4f &&
+							(jointsPos[leftHandIndex].y - jointsPos[leftShoulderIndex].y) > 0.2f &&
+							(jointsPos[leftHandIndex].y - jointsPos[leftShoulderIndex].y) < 0.4f &&
+							Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[rightHandIndex].x) > 0.4f)
+
+
+
+						{
+							SetGestureJoint(ref gestureData, timestamp, rightHandIndex, jointsPos[rightHandIndex]);
+						}
+						break;
+					case 1:  // gesture complete
+						bool isInPose = jointsTracked[rightHandIndex] && jointsTracked[leftHandIndex] && jointsTracked[leftShoulderIndex] && jointsTracked[rightShoulderIndex] &&
+							(jointsPos[rightHandIndex].y - jointsPos[rightShoulderIndex].y) > 0.2f &&
+							(jointsPos[rightHandIndex].y - jointsPos[rightShoulderIndex].y) < 0.4f &&
+							(jointsPos[leftHandIndex].y - jointsPos[leftShoulderIndex].y) > 0.2f &&
+							(jointsPos[leftHandIndex].y - jointsPos[leftShoulderIndex].y) < 0.4f &&
+							Mathf.Abs(jointsPos[leftHandIndex].x - jointsPos[rightHandIndex].x) > 0.4f;
+
+						Vector3 jointPos = jointsPos[gestureData.joint];
+						CheckPoseComplete(ref gestureData, timestamp, jointPos, isInPose, KinectInterop.Constants.PoseCompleteDuration);
+						break;
+				}
+				break;
+
+
+
+			// check for MoveLeft
+			case Gestures.MoveLeft:
                 switch (gestureData.state)
                 {
                     case 0:  // gesture detection - phase 1

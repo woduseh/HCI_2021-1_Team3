@@ -27,8 +27,8 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 		manager.DetectGesture(userId, KinectGestures.Gestures.SwipeLeft);
 		manager.DetectGesture(userId, KinectGestures.Gestures.SwipeRight);
 
-		manager.DetectGesture(userId, KinectGestures.Gestures.Jump);
-		manager.DetectGesture(userId, KinectGestures.Gestures.Squat);
+//		manager.DetectGesture(userId, KinectGestures.Gestures.Jump);
+//		manager.DetectGesture(userId, KinectGestures.Gestures.Squat);
 
 //		manager.DetectGesture(userId, KinectGestures.Gestures.LeanLeft);
 //		manager.DetectGesture(userId, KinectGestures.Gestures.LeanRight);
@@ -36,8 +36,11 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 //		manager.DetectGesture(userId, KinectGestures.Gestures.LeanBack);
 
 		manager.DetectGesture(userId, KinectGestures.Gestures.Run);
+		manager.DetectGesture(userId, KinectGestures.Gestures.Walk);
+		manager.DetectGesture(userId, KinectGestures.Gestures.Walk2);
+		manager.DetectGesture(userId, KinectGestures.Gestures.VPose);
 
-		if(gestureInfo != null)
+		if (gestureInfo != null)
 		{
 			gestureInfo.text = "Swipe, Jump, Squat or Lean.";
 		}
