@@ -7,6 +7,7 @@ public class TitleManager : MonoBehaviour
 {
     public string HGUSelectScene;
     public string TourSelectScene;
+    public string OptionSelectScene;
     public string Scene1;
     public string Scene2;
     public string Scene3;
@@ -19,6 +20,11 @@ public class TitleManager : MonoBehaviour
     public void LoadHGUSelectScene()
     {
         SceneManager.LoadScene(HGUSelectScene);
+    }
+
+    public void LoadOptionSelectScene()
+    {
+        SceneManager.LoadScene(OptionSelectScene);
     }
 
     public void LoadScene1()
