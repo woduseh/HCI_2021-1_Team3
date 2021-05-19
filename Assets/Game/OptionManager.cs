@@ -6,6 +6,7 @@ public class OptionManager : MonoBehaviour
 {
     public UnityEngine.UI.Toggle TourGuide;
     public UnityEngine.UI.Toggle Cal_Indicator;
+    public UnityEngine.UI.Toggle Minimap;
 
     void Start()
     {
@@ -13,6 +14,8 @@ public class OptionManager : MonoBehaviour
         TourGuide.onValueChanged.AddListener(TourGuideToggle);
         Cal_Indicator.onValueChanged.RemoveAllListeners();
         Cal_Indicator.onValueChanged.AddListener(Cal_IndicatorToggle);
+        Minimap.onValueChanged.RemoveAllListeners();
+        Minimap.onValueChanged.AddListener(MinimapToggle);
     }
 
     private void TourGuideToggle(bool _bool)
@@ -36,6 +39,18 @@ public class OptionManager : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("Cal_Indicator", 0);
+        }
+    }
+
+    private void MinimapToggle(bool _bool)
+    {
+        if (_bool == true)
+        {
+            PlayerPrefs.SetInt("Minimap", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Minimap", 0);
         }
     }
 }

@@ -25,6 +25,9 @@ public class VideoController : MonoBehaviour
     // 칼로리 표시기
     public GameObject CalorieIndicator;
 
+    // 미니맵
+    public GameObject Minimap;
+
     // 인식한 모션을 저장하는 UI
     public UnityEngine.UI.Text GestureStatus;
 
@@ -44,6 +47,7 @@ public class VideoController : MonoBehaviour
     float calorie;
     int tourGuide;
     int cal_indicator;
+    int minimap;
 
     void Start() {
         LoadData();
@@ -61,6 +65,7 @@ public class VideoController : MonoBehaviour
         videoPlayer.playbackSpeed = 1f;
 
         if (cal_indicator == 1) CalorieIndicator.SetActive(true); else CalorieIndicator.SetActive(false);
+        if (minimap == 1) Minimap.SetActive(true); else Minimap.SetActive(false);
 
         StartCoroutine("calorieBurn");
     }
@@ -201,6 +206,7 @@ public class VideoController : MonoBehaviour
         calorie = PlayerPrefs.GetFloat("Cal");
         tourGuide = PlayerPrefs.GetInt("TourGuide");
         cal_indicator = PlayerPrefs.GetInt("Cal_Indicator");
+        minimap = PlayerPrefs.GetInt("Minimap");
     }
 
     void SaveData()
