@@ -14,9 +14,11 @@ public class VideoController : MonoBehaviour
     public string RightScene;
     public string LeftScene;
     public string CenterScene;
+    public string GuideScene;
     public GameObject RightArrow;
     public GameObject LeftArrow;
     public GameObject CenterArrows;
+    public GameObject CalorieIndicator;
     public UnityEngine.UI.Text GestureStatus;
     public UnityEngine.UI.Text CaloriesStatus;
 
@@ -24,6 +26,7 @@ public class VideoController : MonoBehaviour
 
     float calorie;
     int tourGuide;
+    int cal_indicator;
 
     void Start() {
         m_sliderTimeScrub.maxValue = videoPlayer.frameCount;
@@ -36,6 +39,9 @@ public class VideoController : MonoBehaviour
         videoPlayer.playbackSpeed = 1f;
 
         LoadData();
+
+        if (cal_indicator == 1) CalorieIndicator.SetActive(true);
+
         StartCoroutine("calorieBurn");
     }
 
@@ -57,6 +63,12 @@ public class VideoController : MonoBehaviour
         if (m_sliderTimeScrub.maxValue * 0.99 <  m_sliderTimeScrub.value)
         {
             videoPlayer.Pause();
+
+            // 가이드 옵션이 켜져있고, 가이드 영상이 존재하면 가이드 영상 실행
+            if (tourGuide == 1 && GuideScene != "")
+            {
+                LoadNextScene(GuideScene);
+            }
 
             // 해당 방향으로 이동 가능하면 화살표 표시
             if (LeftScene != "") LeftArrow.SetActive(true);
@@ -145,6 +157,7 @@ public class VideoController : MonoBehaviour
     {
         calorie = PlayerPrefs.GetFloat("Cal");
         tourGuide = PlayerPrefs.GetInt("TourGuide");
+        cal_indicator = PlayerPrefs.GetInt("Cal_Indicator");
     }
 
     void SaveData()

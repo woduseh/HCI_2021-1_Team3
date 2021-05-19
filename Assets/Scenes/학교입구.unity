@@ -742,6 +742,7 @@ MonoBehaviour:
   RightArrow: {fileID: 906884272}
   LeftArrow: {fileID: 175234028}
   CenterArrows: {fileID: 854415324}
+  CalorieIndicator: {fileID: 1377452797}
   GestureStatus: {fileID: 2060897186}
   CaloriesStatus: {fileID: 1377452800}
 --- !u!4 &487750953
@@ -1751,7 +1752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1377452798
 RectTransform:
   m_ObjectHideFlags: 0

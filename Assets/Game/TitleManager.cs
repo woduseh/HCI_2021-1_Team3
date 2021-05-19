@@ -12,6 +12,12 @@ public class TitleManager : MonoBehaviour
     public string Scene2;
     public string Scene3;
 
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public void LoadTourSelectScene()
     {
         SceneManager.LoadScene(TourSelectScene);
