@@ -11,36 +11,56 @@ public class VideoController : MonoBehaviour
     [SerializeField] VideoPlayer videoPlayer = null;
     [SerializeField] Slider m_sliderTimeScrub = null;
 
+    // 전환할 씬
     public string RightScene;
     public string LeftScene;
     public string CenterScene;
     public string GuideScene;
+
+    // 이동 가능 방향을 알리는 화살표
     public GameObject RightArrow;
     public GameObject LeftArrow;
     public GameObject CenterArrows;
+
+    // 칼로리 표시기
     public GameObject CalorieIndicator;
+
+    // 인식한 모션을 저장하는 UI
     public UnityEngine.UI.Text GestureStatus;
+
+    // 소모한 칼로리를 표시하는 UI
     public UnityEngine.UI.Text CaloriesStatus;
+
+    // 종료 경고 텍스트
+    public GameObject ExitAlart;
+
+    // 종료, 종료 취소 버튼
+    public GameObject ExitButton;
+    public GameObject CancelExitButton;
 
     static float calorieSpeed = 100f; // 칼로리 표기 갱신 주기 (100f = 1/100초마다 갱신)
 
+    // Playerprefs에 저장된 소모 칼로리와 옵션
     float calorie;
     int tourGuide;
     int cal_indicator;
 
     void Start() {
+        LoadData();
+
         m_sliderTimeScrub.maxValue = videoPlayer.frameCount;
         StartCoroutine(PlayVideoCor());
 
         LeftArrow.SetActive(false);
         RightArrow.SetActive(false);
         CenterArrows.SetActive(false);
+        ExitAlart.SetActive(false);
+        ExitButton.SetActive(false);
+        CancelExitButton.SetActive(false);
 
         videoPlayer.playbackSpeed = 1f;
 
-        LoadData();
-
-        if (cal_indicator == 1) CalorieIndicator.SetActive(true);
+        if (cal_indicator == 1) CalorieIndicator.SetActive(true); else CalorieIndicator.SetActive(false);
 
         StartCoroutine("calorieBurn");
     }
@@ -98,6 +118,14 @@ public class VideoController : MonoBehaviour
                 videoPlayer.playbackSpeed = 1f;
                 videoPlayer.Play();
             }
+            // 종료 자세 (v 포즈 - 양팔 들기)를 취했을 때
+            else if (GestureStatus.text.Contains("vpose"))
+            {
+                videoPlayer.Pause();
+                ExitAlart.SetActive(true);
+                ExitButton.SetActive(true);
+                CancelExitButton.SetActive(true);
+            }
             else
             {
                 videoPlayer.Pause();
@@ -119,6 +147,7 @@ public class VideoController : MonoBehaviour
         videoPlayer.frame = (long)m_sliderTimeScrub.value;
     }
 
+    // 칼로리 계산
     IEnumerator calorieBurn()
     {
         while (true)
@@ -128,6 +157,20 @@ public class VideoController : MonoBehaviour
 
             yield return new WaitForSecondsRealtime(1.0f / calorieSpeed);
         }
+    }
+
+    // 투어 종료
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    // 투어 종료 취소
+    public void CalcelExit()
+    {
+        ExitAlart.SetActive(false);
+        ExitButton.SetActive(false);
+        CancelExitButton.SetActive(false);
     }
 
     // 씬 로드
