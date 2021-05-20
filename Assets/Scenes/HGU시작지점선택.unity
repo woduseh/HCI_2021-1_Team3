@@ -261,8 +261,8 @@ MonoBehaviour:
   TourSelectScene: 
   OptionSelectScene: 
   MainScene: "\uBA54\uC778\uD654\uBA74"
-  Scene1: "\uC5D0\uBCA4\uC5D0\uC140"
-  Scene2: "\uC815\uBB38"
+  Scene1: "\uC5D0\uBCA4\uC5D0\uC140 \uB098\uC624\uB294\uAE38"
+  Scene2: "\uCC44\uD50C\uAC00\uB294\uAE38"
   Scene3: "\uD559\uAD00"
 --- !u!4 &391874607
 Transform:
