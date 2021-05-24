@@ -48,6 +48,7 @@ public class VideoController : MonoBehaviour
     int tourGuide;
     int cal_indicator;
     int minimap;
+    bool is_calBurn = false;
 
     void Start() {
         LoadData();
@@ -67,6 +68,7 @@ public class VideoController : MonoBehaviour
         if (cal_indicator == 1) CalorieIndicator.SetActive(true); else CalorieIndicator.SetActive(false);
         if (minimap == 1) Minimap.SetActive(true); else Minimap.SetActive(false);
 
+        is_calBurn = false;
         StartCoroutine("calorieBurn");
     }
 
@@ -77,10 +79,12 @@ public class VideoController : MonoBehaviour
         if (videoPlayer.isPlaying == true)
         {
             m_sliderTimeScrub.value = (float)videoPlayer.frame;
-            StartCoroutine("calorieBurn");
+            
+            if (is_calBurn == false) StartCoroutine("calorieBurn");
 
         } else if (videoPlayer.isPlaying == false)
         {
+            is_calBurn = false;
             StopCoroutine("calorieBurn");
         }
 
@@ -89,27 +93,12 @@ public class VideoController : MonoBehaviour
         {
             videoPlayer.Pause();
 
-            // 가이드 옵션이 켜져있고, 가이드 영상이 존재하면 가이드 영상 실행
-            if (tourGuide == 1 && GuideScene != "")
-            {
-                LoadNextScene(GuideScene);
-            }
-
             // 해당 방향으로 이동 가능하면 화살표 표시
             if (LeftScene != "") LeftArrow.SetActive(true);
             if (RightScene != "") RightArrow.SetActive(true);
             if (CenterScene != "") CenterArrows.SetActive(true);
 
-            if (GestureStatus.text.Contains("Left"))
-            {
-                LoadNextScene(LeftScene);
-            } else if (GestureStatus.text.Contains("Right"))
-            {
-                LoadNextScene(RightScene);
-            } else if (GestureStatus.text.Contains("Run") || GestureStatus.text.Contains("walk"))
-            {
-                LoadNextScene(CenterScene);
-            }
+            Invoke("Scenechanger", 2);
         } else
         {
             // 현재 재스쳐를 인식하여 비디오 진행, 정지 결정
@@ -118,13 +107,13 @@ public class VideoController : MonoBehaviour
                 videoPlayer.playbackSpeed = 1.5f;
                 videoPlayer.Play();
             }
-            else if (GestureStatus.text.Contains("walk"))
+            else if (GestureStatus.text.Contains("Walk"))
             {
                 videoPlayer.playbackSpeed = 1f;
                 videoPlayer.Play();
             }
             // 종료 자세 (v 포즈 - 양팔 들기)를 취했을 때
-            else if (GestureStatus.text.Contains("vpose"))
+            else if (GestureStatus.text.Contains("VPose"))
             {
                 videoPlayer.Pause();
                 ExitAlart.SetActive(true);
@@ -155,12 +144,34 @@ public class VideoController : MonoBehaviour
     // 칼로리 계산
     IEnumerator calorieBurn()
     {
+        is_calBurn = true;
         while (true)
         {
-            float randNum = Random.Range(0.0625f, 0.1f);
-            calorie = calorie + randNum / (videoPlayer.frameRate * calorieSpeed);
-
             yield return new WaitForSecondsRealtime(1.0f / calorieSpeed);
+            float randNum = Random.Range(0.0625f, 0.8333f);
+            calorie = calorie + (randNum / (videoPlayer.frameRate * calorieSpeed));
+        }
+    }
+
+    void Scenechanger()
+    {
+        // 가이드 옵션이 켜져있고, 가이드 영상이 존재하면 가이드 영상 실행
+        if (tourGuide == 1 && GuideScene != "")
+        {
+            LoadNextScene(GuideScene);
+        }
+
+        if (GestureStatus.text.Contains("Left"))
+        {
+            LoadNextScene(LeftScene);
+        }
+        else if (GestureStatus.text.Contains("Right"))
+        {
+            LoadNextScene(RightScene);
+        }
+        else if (GestureStatus.text.Contains("Run") || GestureStatus.text.Contains("Walk"))
+        {
+            LoadNextScene(CenterScene);
         }
     }
 
@@ -168,6 +179,11 @@ public class VideoController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ReturnToSceneSelect()
+    {
+        LoadNextScene("HGU시작지점선택");
     }
 
     // 투어 종료 취소
