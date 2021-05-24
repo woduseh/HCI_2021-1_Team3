@@ -124,7 +124,7 @@ public class VideoController : MonoBehaviour
                 videoPlayer.Play();
             }
             // 종료 자세 (v 포즈 - 양팔 들기)를 취했을 때
-            else if (GestureStatus.text.Contains("vpose"))
+            else if (GestureStatus.text.Contains("VPose"))
             {
                 videoPlayer.Pause();
                 ExitAlart.SetActive(true);
