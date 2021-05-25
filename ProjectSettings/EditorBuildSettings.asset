@@ -66,12 +66,12 @@ EditorBuildSettings:
     path: "Assets/Scenes/\uD559\uAD00.unity"
     guid: 95beee78c5045e747b04f4b1c231b25a
   - enabled: 1
+    path: "Assets/Scenes/\uD53C\uCE58 \uAD11\uC7A5 \uC124\uBA85.unity"
+    guid: 08b12cfcd96c6bd4089327d4344ab70e
+  - enabled: 1
     path: "Assets/Scenes/\uD559\uAD00 \uC124\uBA85.unity"
     guid: 9c29cc68baa3b9a4da72c463b6d98683
   - enabled: 1
     path: "Assets/Scenes/\uD604\uB3D9\uD640 \uC124\uBA85.unity"
     guid: 4266708fe4643f14b9ec18bcbcb51900
-  - enabled: 1
-    path: "Assets/Scenes/\uD53C\uCE58 \uAD11\uC7A5 \uC124\uBA85.unity"
-    guid: 08b12cfcd96c6bd4089327d4344ab70e
   m_configObjects: {}

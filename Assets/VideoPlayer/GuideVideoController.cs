@@ -18,6 +18,8 @@ public class GuideVideoController : MonoBehaviour
     {
         m_sliderTimeScrub.maxValue = videoPlayer.frameCount;
         StartCoroutine(PlayVideoCor());
+
+        videoPlayer.Play();
     }
 
     private void Update()
@@ -26,7 +28,6 @@ public class GuideVideoController : MonoBehaviour
         if (videoPlayer.isPlaying == true)
         {
             m_sliderTimeScrub.value = (float)videoPlayer.frame;
-
         }
 
         // 영상 종료 시 씬 변환
